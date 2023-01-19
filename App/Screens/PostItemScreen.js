@@ -97,6 +97,7 @@ const PostItemScreen = () => {
           },
         }
       );
+      console.log(response.data)
       if (response.data == 1) {
         setIsSuccess(true);
         successTimeout.current = setTimeout(hideSuccessAnimation, 3000);

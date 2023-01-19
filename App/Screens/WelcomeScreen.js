@@ -1,23 +1,19 @@
-import { StyleSheet, Text, View, Image } from "react-native";
+import { StyleSheet, Text, View, Image, ImageBackground } from "react-native";
 import React from "react";
 
 import Button from "../../App/Components/Button";
-import Colors from "../Config/Colors";
+
+const image = require('../../assets/w2.jpg')
+
 
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <View style={styles.logoContainer}>
-        <Image source={require(`../../assets/logo.png`)} style={styles.logo} />
+    <ImageBackground source={image} resizeMode="cover" style={styles.image} blurRadius={5}>
+       <View style={styles.logoContainer}>
+        <Image source={require(`../../assets/logom.png`)} style={styles.logo}  />
       </View>
 
-      <View style={styles.welcome}>
-        <Image
-          source={require(`../../assets/welcome.png`)}
-          style={styles.image}
-        />
-        <Text style={styles.text}>Sell What You Don`t Want</Text>
-      </View>
       <View style={styles.button}>
         <Button
           title={"Create new account"}
@@ -30,42 +26,39 @@ const WelcomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate('Login')}
         />
       </View>
-    </View>
+    </ImageBackground>
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    margin: 12,
-    backgroundColor: Colors.background,
-  },
-  logoContainer: {
-    position: "relative",
-    bottom: 35,
-  },
-  logo: {
-    width: 230,
-    height: 160,
-    alignSelf: "center",
-  },
-  welcome: {
-    position: "absolute",
-    top: 150,
-    alignItems: "center",
+    flex: 1,
   },
   image: {
-    width: 330,
-    height: 250,
+    flex: 1,
+    justifyContent: 'center',
   },
-  text: {
-    fontWeight: "600",
-    fontSize: 23,
+
+    logoContainer: {
+    position: "absolute",
+    top: 10,
+    justifyContent: 'center'
   },
+  logo: {
+    width: 350,
+    height: 180,
+    alignSelf: "center",
+  },
+
   button: {
     width: "100%",
     position: "absolute",
     top: 530,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });
+
 
 export default WelcomeScreen;

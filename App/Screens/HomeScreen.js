@@ -28,6 +28,7 @@ const HomeScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [noProducts, setNoProducts] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -38,17 +39,20 @@ const HomeScreen = ({ navigation }) => {
       setList(result);
       setIsLoading(false);
       if (response.data.Message == 2) {
-        console.log('no')
         setNoProducts(true);
       } else {
         setNoProducts(false);
       }
     } catch (error) {
+      if (error.message === "Network Error") {
+        console.log("network error", error);
+      }
       setError(true);
       console.error(error);
+    } finally {
+      setIsRefresh(false);
     }
   };
-
 
   useEffect(() => {
     fetchData();
@@ -58,11 +62,7 @@ const HomeScreen = ({ navigation }) => {
     setLabel(selectedLabel);
   };
 
- 
-  
-
-
-  //Arranging products in alphabetical 
+  //Arranging products in alphabetical
   const handleOrderClick = () => {
     const newList = [...list];
     newList.sort((a, b) =>
@@ -85,13 +85,12 @@ const HomeScreen = ({ navigation }) => {
       <SafeView style={styles.container}>
         <>
           <View style={styles.wrap}>
-
             <Pressable
               onPress={() => navigation.navigate("search")}
               style={styles.wrapSearch}
             >
               <Text style={styles.searchText}> Search </Text>
-              <Ionicons name={"ios-search"} size={24} color={"#c8ccc8"} />
+              <Ionicons name={"ios-search"} size={24} color={"#626363"} />
             </Pressable>
 
             <Pressable style={styles.wrapSort} onPress={handleOrderClick}>
@@ -101,7 +100,6 @@ const HomeScreen = ({ navigation }) => {
                 color={Colors.white}
               />
             </Pressable>
-
           </View>
           <View>
             <Category
@@ -112,10 +110,20 @@ const HomeScreen = ({ navigation }) => {
           </View>
 
           <View style={styles.flatlist}>
+            {isRefresh && (
+              <View style={styles.refreshContainer}>
+                <LottieView
+                  source={require("../../assets/animations/load3.json")}
+                  autoPlay
+                  loop
+                />
+              </View>
+            )}
+
             {noProducts && (
-                <Text style={styles.noProductsText}>
-                  No products in this category.
-                </Text>
+              <Text style={styles.noProductsText}>
+                No products in this category.
+              </Text>
             )}
 
             {isLoading ? (
@@ -126,7 +134,7 @@ const HomeScreen = ({ navigation }) => {
                   loop
                   style={{
                     width: 200,
-                    height: 200
+                    height: 200,
                   }}
                 />
               </View>
@@ -140,6 +148,11 @@ const HomeScreen = ({ navigation }) => {
                 onScroll={(e) =>
                   setShowButton(e.nativeEvent.contentOffset.y > 200)
                 }
+                onRefresh={() => {
+                  setIsRefresh(true);
+                  fetchData();
+                }}
+                refreshing={isRefresh}
                 onEndReachedThreshold={0.5}
                 showsVerticalScrollIndicator={false}
                 ref={flatListRef}
@@ -193,7 +206,7 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   wrapSearch: {
-    backgroundColor: "#e0e0de",
+    backgroundColor: "#fff",
     width: "82%",
     alignItems: "center",
     borderRadius: 27,
@@ -201,10 +214,12 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+    borderWidth: 1,
+    borderColor: "#c8ccc8",
   },
   searchText: {
     fontSize: 18,
-    color: '#c8ccc8'
+    color: "#626363",
   },
   wrapSort: {
     width: 45,
@@ -236,12 +251,12 @@ const styles = StyleSheet.create({
   post: {
     marginVertical: 20,
   },
- 
-  noProductsText:{
-     alignSelf: 'center',
-     fontSize: 18,
-     color: "#666",
-     paddingTop: 100
+
+  noProductsText: {
+    alignSelf: "center",
+    fontSize: 18,
+    color: "#666",
+    paddingTop: 100,
   },
   errorContainer: {
     flex: 1,

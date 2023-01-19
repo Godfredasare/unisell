@@ -15,26 +15,20 @@ import Button from "../../../App/Components/Button";
 import Colors from "../../../App/Config/Colors";
 import ErrorMessage from "../../../App/Components/ErrorMessage";
 
-
 const NewPassSchema = Yup.object().shape({
-  password: Yup
-    .string()
-    .required('please enter your password')
-    .min(6, 'Password must be 6 characters long')
-    .matches(/[0-9]/, 'Password requires a number')
-    .matches(/[a-z]/, 'Password requires a lowercase letter')
-    .matches(/[A-Z]/, 'Password requires an uppercase letter'),
-  confirmPassword: Yup
-    .string()
-    .required('Please confirm your password')
-    .oneOf([Yup.ref('password'), null], 'Must match "password" field value'),
+  password: Yup.string()
+    .required("please enter your password")
+    .min(6, "Password must be 6 characters long")
+    .matches(/[0-9]/, "Password requires a number")
+    .matches(/[a-z]/, "Password requires a lowercase letter")
+    .matches(/[A-Z]/, "Password requires an uppercase letter"),
+  confirmPassword: Yup.string()
+    .required("Please confirm your password")
+    .oneOf([Yup.ref("password"), null], 'Must match "password" field value'),
 });
 
-
 const NewPassword = () => {
-
   const [showPassword, setShowPassword] = useState(false);
-
 
   return (
     <KeyboardAvoidingView behavior="position">
@@ -55,16 +49,15 @@ const NewPassword = () => {
           </Text>
         </View>
         <Formik
-       initialValues={{password: "", confirmPassword: ''}}
-       onSubmit={(values) => console.log(values)}
-       validationSchema={NewPassSchema}
-      >
-                {({ handleChange, handleBlur, handleSubmit, values }) => (
-      <View style={styles.forms}>
-       
-       <InputPassword
-        showPassword={showPassword}
-        setShowPassword={setShowPassword}
+          initialValues={{ password: "", confirmPassword: "" }}
+          onSubmit={(values) => console.log(values)}
+          validationSchema={NewPassSchema}
+        >
+          {({ handleChange, handleBlur, handleSubmit, values }) => (
+            <View style={styles.forms}>
+              <InputPassword
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
                 style={{ flex: 1 }}
                 icon="lock"
                 placeholder="New Password"
@@ -76,10 +69,10 @@ const NewPassword = () => {
                 value={values.password}
               />
               <ErrorMessage name={"password"} />
-              
+
               <InputPassword
-               showPassword={showPassword}
-               setShowPassword={setShowPassword}
+                showPassword={showPassword}
+                setShowPassword={setShowPassword}
                 style={{ flex: 1 }}
                 icon="lock"
                 placeholder="Comfirm Password"
@@ -91,10 +84,10 @@ const NewPassword = () => {
                 value={values.confirmPassword}
               />
               <ErrorMessage name={"confirmPassword"} />
-        <Button title={"Send"} onPress={handleSubmit}/>
-      </View>
-                )}
-      </Formik>
+              <Button title={"Send"} onPress={handleSubmit} />
+            </View>
+          )}
+        </Formik>
       </View>
     </KeyboardAvoidingView>
   );
@@ -105,6 +98,7 @@ export default NewPassword;
 const styles = StyleSheet.create({
   container: {
     marginTop: 35,
+    backgroundColor: Colors.white,
   },
   top: {
     flexDirection: "row",

@@ -18,7 +18,7 @@ const SearchScreen2 = ({ navigation }) => {
       );
       const result = response.data.srchpost;
 
-      console.log(response.data.Message == 2)
+      console.log(response.data.Message == 2);
 
       setList(result);
     } catch (error) {
@@ -84,6 +84,6 @@ const styles = StyleSheet.create({
   },
   list: {
     padding: 10,
-    flex: 1
+    flex: 1,
   },
 });

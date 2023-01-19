@@ -14,7 +14,6 @@ import {
   MaterialCommunityIcons,
   Ionicons,
 } from "@expo/vector-icons";
-// import {ImagePicker} from 'expo';
 
 import Colors from "../Config/Colors";
 import Back from "../Components/Back";

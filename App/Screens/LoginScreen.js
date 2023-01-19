@@ -5,7 +5,6 @@ import {
   Image,
   TouchableOpacity,
   Alert,
-  KeyboardAvoidingView,
   Keyboard,
 } from "react-native";
 import React, { useContext, useRef, useState } from "react";
@@ -54,8 +53,7 @@ const LoginScreen = ({ navigation }) => {
       );
       if (response.data.Message == 1) {
         AuthStorage.storeToken(response.data.users);
-        const user = AuthStorage.getToken();
-        setUser(user);
+        AuthStorage.getToken().then(user => setUser(user));
         resetForm();
       } else if (response.data.Message == 2) {
         setUserError("Invalid email and/or password");
@@ -99,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
         <View>
           <View style={styles.logoContainer}>
             <Image
-              source={require(`../../assets/logo.png`)}
+              source={require(`../../assets/logom.png`)}
               style={styles.logo}
             />
           </View>
@@ -174,7 +172,8 @@ export default LoginScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     backgroundColor: "#fff",
   },
 
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 150,
+    width: 300,
     height: 200,
   },
   textContainer: {

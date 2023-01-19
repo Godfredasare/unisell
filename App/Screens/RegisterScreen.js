@@ -109,7 +109,7 @@ const RegisterScreen = ({ navigation }) => {
       {isSuccess && (
         <View style={styles.animations}>
           <LottieView
-            source={require("../../assets/animations/success2.json")}
+            source={require("../../assets/animations/done.json")}
             autoPlay
             loop
             style={{
@@ -123,7 +123,7 @@ const RegisterScreen = ({ navigation }) => {
         <View>
           <View style={styles.logoContainer}>
             <Image
-              source={require(`../../assets/logo.png`)}
+              source={require(`../../assets/logom.png`)}
               style={styles.logo}
             />
           </View>
@@ -208,7 +208,8 @@ export default RegisterScreen;
 
 const styles = StyleSheet.create({
   container: {
-    padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
     backgroundColor: "#fff",
   },
 
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   logo: {
-    width: 150,
+    width: 300,
     height: 200,
   },
   textContainer: {

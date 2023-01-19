@@ -1,6 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
-import * as AppLoading from "expo";
 
 import AuthNavigation from "./App/Navigation/AuthNavigation";
 import { useCallback, useEffect, useState } from "react";

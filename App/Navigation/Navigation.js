@@ -14,7 +14,7 @@ const Stack = createNativeStackNavigator();
 const Navigation = () => {
   return (
     <Stack.Navigator
-      screenOptions={{
+    screenOptions={{
         headerShown: false,
       }}
     >
@@ -22,8 +22,8 @@ const Navigation = () => {
       <Stack.Screen name="Detail" component={ProductOverviewScreen} />
       <Stack.Screen name="MyPost" component={MyPostScreen} />
       <Stack.Screen name="favourite" component={FavoriteScreen} />
-      <Stack.Screen name="about" component={AboutScreen} />
       <Stack.Screen name="search" component={SearchScreen2} />
+      <Stack.Screen name="about" component={AboutScreen} />
     </Stack.Navigator>
   );
 };

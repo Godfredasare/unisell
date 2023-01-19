@@ -18,6 +18,7 @@ const MyPostScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(false);
   const [noProducts, setNoProducts] = useState(false);
+  const [isRefresh, setIsRefresh] = useState(false);
 
   const myPostApi = async () => {
     try {
@@ -28,9 +29,11 @@ const MyPostScreen = ({ navigation }) => {
       setListings(result);
       setIsLoading(false);
     } catch (error) {
-      setError(true)
+      setError(true);
       console.log(error);
       setError(true);
+    } finally {
+      setIsRefresh(false);
     }
   };
 
@@ -65,6 +68,14 @@ const MyPostScreen = ({ navigation }) => {
         <Text style={styles.text}>My Post</Text>
       </View>
       <View style={styles.post}>
+        {isRefresh && (
+          <LottieView
+            source={require("../../../assets/animations/load3.json")}
+            autoPlay
+            loop
+          />
+        )}
+
         {isLoading ? (
           <View style={styles.load}>
             <LottieView
@@ -84,6 +95,11 @@ const MyPostScreen = ({ navigation }) => {
           </View>
         ) : (
           <FlatList
+            onRefresh={() => {
+              setIsRefresh(true);
+              myPostApi();
+            }}
+            refreshing={isRefresh}
             data={listings}
             showsVerticalScrollIndicator={false}
             keyExtractor={(item) => item.post_id}

@@ -19,7 +19,7 @@ const AboutScreen = ({ navigation }) => {
       
       >
         <View style={styles.wrap}>
-        <Image style={styles.logo} source={require("../../../assets/logo.png")} />
+        <Image style={styles.logo} source={require("../../../assets/logom.png")} />
         <Text style={styles.appVersion}>Version 1.0.0</Text>
         <Text style={styles.appDescription}>
           UniSell is an online marketplace app that allows users to buy and sell

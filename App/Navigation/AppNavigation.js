@@ -6,7 +6,6 @@ import { MaterialCommunityIcons, Ionicons } from "@expo/vector-icons";
 import PostIcon from "./PostIcon";
 import PostItemScreen from "../Screens/PostItemScreen";
 import Colors from "../Config/Colors";
-import ProfileScreen from "../Screens/Profile/ProfileScreen";
 import ProfileScreen2 from "../Screens/Profile/ProfileScreen2";
 import HomeScreen from "../Screens/HomeScreen";
 
@@ -24,7 +23,7 @@ const AppNavigation = (route) => {
         tabBarHideOnKeyboard: true,
         tabBarActiveTintColor: Colors.primary,
         headerShown: false,
-        tabBarShowLabel: false,
+        // tabBarShowLabel: false,
         tabBarStyle: {
           // position: "absolute",
           // bottom: 6,
@@ -56,16 +55,7 @@ const AppNavigation = (route) => {
           ),
         })}
       />
-      {/* <Tab.Screen
-        name="profile2"
-        component={ProfileScreen}
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" color={color} size={32} />
-          ),
-         
-        }}
-      /> */}
+    
       <Tab.Screen
         name="profile"
         component={ProfileScreen2}
