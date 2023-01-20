@@ -141,7 +141,7 @@ const HomeScreen = ({ navigation }) => {
             ) : error ? (
               <View style={styles.errorContainer}>
                 <Text style={styles.errorText}>Couldn't load listings</Text>
-                <Button title="Try again" onPress={fetchData} />
+                <Button title="Try again" onPress={() => fetchData()} />
               </View>
             ) : (
               <FlatList

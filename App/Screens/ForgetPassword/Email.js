@@ -11,7 +11,6 @@ import Button from "../../../App/Components/Button";
 import Colors from "../../../App/Config/Colors";
 import ErrorMessage from "../../../App/Components/ErrorMessage";
 import axios from "axios";
-import TokenContext from "../../hooks/TokenContext";
 
 const emailSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Required"),
@@ -19,9 +18,7 @@ const emailSchema = Yup.object().shape({
 
 const Email = ({ navigation }) => {;
   const [loading, setLoading] = useState(false);
-  const [code, setCode] = useState('')
 
-  console.log(code)
 
   const handleEmailVerification = async (values, { resetForm }) => {
     try {
@@ -35,7 +32,6 @@ const Email = ({ navigation }) => {;
       );
       console.log(response.data);
       if (response.data.Message == 1) {
-        setCode(response.data.Code)
         navigation.navigate('verify')
         resetForm();
       } else if (response.data.Message == 2) {
@@ -77,10 +73,9 @@ const Email = ({ navigation }) => {;
         </View>
       )}
       <SafeArea style={styles.container}>
-        <TokenContext.Provider value={{code, setCode}}>
           <View style={styles.top}>
             <Back onPress={() => navigation.goBack()} />
-            <Text style={styles.text}>Forget Password</Text>
+            <Text style={styles.text}>Forgot Password</Text>
           </View>
           <View style={styles.Pic}>
             <View style={styles.imageContainer}>
@@ -112,12 +107,10 @@ const Email = ({ navigation }) => {;
                 />
                 <ErrorMessage name={"email"} />
                 <Button title={"Send"} onPress={handleSubmit} />
-                <Button title={"Send"} onPress={() => navigation.navigate('verify')} />
               </View>
             )}
           </Formik>
 
-        </TokenContext.Provider>
       </SafeArea>
     </>
   );
@@ -133,10 +126,12 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 5
   },
   text: {
-    paddingHorizontal: 65,
+    paddingHorizontal: 49,
     fontSize: 23,
     fontWeight: "600",
   },
@@ -163,6 +158,8 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     padding: 9,
     textAlign: "center",
+    color: Colors.price
+
   },
   forms: {
     paddingLeft: 20,
@@ -173,7 +170,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     position: "absolute",
-    // top: 200,
     zIndex: 1,
     width: "100%",
     height: "100%",

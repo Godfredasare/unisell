@@ -3,7 +3,6 @@ import {
   Text,
   View,
   Image,
-  KeyboardAvoidingView,
 } from "react-native";
 import React, { useState } from "react";
 import { Formik } from "formik";
@@ -14,6 +13,7 @@ import InputPassword from "../../../App/Components/InputPassword";
 import Button from "../../../App/Components/Button";
 import Colors from "../../../App/Config/Colors";
 import ErrorMessage from "../../../App/Components/ErrorMessage";
+import SafeView from "../../../App/Components/SafeAreaView";
 
 const NewPassSchema = Yup.object().shape({
   password: Yup.string()
@@ -27,14 +27,13 @@ const NewPassSchema = Yup.object().shape({
     .oneOf([Yup.ref("password"), null], 'Must match "password" field value'),
 });
 
-const NewPassword = () => {
+const NewPassword = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <KeyboardAvoidingView behavior="position">
-      <View style={styles.container}>
+      <SafeView style={styles.container}>
         <View style={styles.top}>
-          <Back />
+          <Back onPress={() => navigation.goBack()}/>
           <Text style={styles.text}>Forget Password</Text>
         </View>
         <View style={styles.Pic}>
@@ -88,8 +87,7 @@ const NewPassword = () => {
             </View>
           )}
         </Formik>
-      </View>
-    </KeyboardAvoidingView>
+      </SafeView>
   );
 };
 
@@ -97,16 +95,18 @@ export default NewPassword;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 35,
     backgroundColor: Colors.white,
+    flex: 1
   },
   top: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 10,
+    paddingLeft: 20,
+    paddingRight: 20,
+    paddingTop: 5
   },
   text: {
-    paddingHorizontal: 65,
+    paddingHorizontal: 52,
     fontSize: 23,
     fontWeight: "600",
   },
@@ -119,22 +119,24 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     backgroundColor: Colors.forget,
     borderRadius: 90,
-    width: 180,
-    height: 180,
+    width: 130,
+    height: 130,
     alignItems: "center",
     justifyContent: "center",
   },
   image: {
-    width: 100,
-    height: 100,
+    width: 90,
+    height: 90,
   },
   text2: {
     fontSize: 18,
     fontWeight: "600",
-    margin: 9,
     textAlign: "center",
+    padding: 9,
+    color: Colors.price
   },
   forms: {
-    padding: 20,
+    paddingLeft: 20,
+    paddingRight: 20,
   },
 });

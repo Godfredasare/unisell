@@ -7,7 +7,7 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import * as Linking from "expo-linking";
 import {
   MaterialIcons,
@@ -19,30 +19,19 @@ import Colors from "../Config/Colors";
 import Back from "../Components/Back";
 import Contacts from "../Components/Contacts";
 import SafeView from "../Components/SafeAreaView";
+import AuthContext from '../hooks/Authcontex'
 
 const width = Dimensions.get("window").width;
 const height = Dimensions.get("window").height;
 
 const ProductOverviewScreen = ({ navigation, route, imageUri }) => {
   const Post = route.params;
+  const {user} = useContext(AuthContext)
+  // console.log(user)
 
   const [liked, setLiked] = useState();
   const [imgActive, setImgActive] = useState(0);
 
-  // const downloadImage = async (imageUrl) => {
-  //   try {
-  //     const response = await fetch(imageUrl);
-  //     const file = await response.blob();
-  //     const result = await ImagePicker.saveToLibraryAsync(file);
-  //     console.log('Image saved to', result);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  const handleClicked = () => {
-    setLiked(!liked);
-  };
 
   // image slide
   const onChange = (nativeEvent) => {
@@ -88,12 +77,6 @@ const ProductOverviewScreen = ({ navigation, route, imageUri }) => {
                     source={{ uri: e }}
                     resizeMode="stretch"
                   />
-                  {/* <TouchableOpacity
-                    style={styles.downloadIcon}
-                    onPress={() => downloadImage(e)}
-                  >
-                    <Ionicons name="ios-download" size={30} color="#fff" />
-                  </TouchableOpacity> */}
                 </View>
               ))}
             </ScrollView>
@@ -110,24 +93,6 @@ const ProductOverviewScreen = ({ navigation, route, imageUri }) => {
               ))}
             </View>
           </View>
-
-          {/* <TouchableOpacity style={styles.fav} onPress={handleClicked}>
-            {liked ? (
-              <MaterialCommunityIcons
-                name="heart"
-                size={20}
-                color={Colors.primary}
-                style={styles.heart}
-              />
-            ) : (
-              <MaterialCommunityIcons
-                name="heart-outline"
-                size={20}
-                color="black"
-                style={styles.heart}
-              />
-            )}
-          </TouchableOpacity> */}
 
           <View style={styles.backContainer}>
             <Back
@@ -177,7 +142,7 @@ const ProductOverviewScreen = ({ navigation, route, imageUri }) => {
                   </View>
                 </View>
                 <Text style={styles.name} numberOfLines={1}>
-                  KwesiKay ggetde dvdg
+                  {user.username}
                 </Text>
               </View>
               <View style={styles.contact}>
