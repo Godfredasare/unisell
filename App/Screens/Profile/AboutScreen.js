@@ -56,13 +56,19 @@ const AboutScreen = ({ navigation }) => {
         <View style={styles.contact}>
         <Contacts
             contact={"Chat"}
-            contactIcon={"logo-whatsapp"}
+            contactIcon={"whatsapp"}
             onPress={() => Linking.openURL('whatsapp://send?text=Hello&phone=' + '233'+ '0594822630')}
             />
         <Contacts
             contact={"Chat"}
-            contactIcon={"call-outline"}
-            onPress={() => Linking.openURL('tel:' + '0549088346')}
+            contactIcon={"phone-alt"}
+            onPress={() => Linking.openURL('tel:' + '0594822630')}
+            />
+        <Contacts
+            contact={"Chat"}
+            contactIcon={"telegram-plane"}
+            onPress={() => Linking.openURL('https://t.me/UniSell123')}
+            color='telegram'
             />
         </View>
       </ScrollView>

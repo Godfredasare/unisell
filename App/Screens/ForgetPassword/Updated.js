@@ -5,11 +5,11 @@ import Back from "../../Components/Back";
 import Button from "../../Components/Button";
 import Colors from '../../../App/Config/Colors'
 
-const Updated = () => {
+const Updated = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.top}>
-        <Back />
+        <Back onPress={() => navigation.goBack()} />
         <Text style={styles.text}>Reset password</Text>
       </View>
       <View style={styles.Pic}>
@@ -21,7 +21,7 @@ const Updated = () => {
         <Text style={styles.text3}>Your Password has been updated.</Text>
       </View>
       <View style={styles.button}>
-        <Button title={"Login"} />
+        <Button title={"Login"}  onPress={() => navigation.navigate('Login')}/>
       </View>
     </View>
   );

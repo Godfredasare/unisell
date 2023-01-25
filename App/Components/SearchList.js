@@ -10,7 +10,6 @@ import {
   
   import Colors from "../Config/Colors";
   
-  const Width = Dimensions.get("window").width;
   
   const SearchList = ({
     title,

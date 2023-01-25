@@ -2,16 +2,14 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
   Dimensions,
   ScrollView,
+   Linking 
 } from "react-native";
-import React, { useContext, useState } from "react";
-import * as Linking from "expo-linking";
+import React, { useContext, useState} from "react";
 import {
   MaterialIcons,
-  MaterialCommunityIcons,
   Ionicons,
 } from "@expo/vector-icons";
 
@@ -147,11 +145,11 @@ const ProductOverviewScreen = ({ navigation, route, imageUri }) => {
               </View>
               <View style={styles.contact}>
                 <Contacts
-                  contactIcon={"logo-whatsapp"}
+                  contactIcon={"whatsapp"}
                   onPress={handlePressWhatsapp}
                 />
                 <Contacts
-                  contactIcon={"call-outline"}
+                  contactIcon={"phone-alt"}
                   onPress={handlePressTele}
                 />
               </View>

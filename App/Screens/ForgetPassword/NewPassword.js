@@ -7,6 +7,8 @@ import {
 import React, { useState } from "react";
 import { Formik } from "formik";
 import * as Yup from "yup";
+import axios from "axios";
+import LottieView from 'lottie-react-native'
 
 import Back from "../../../App/Components/Back";
 import InputPassword from "../../../App/Components/InputPassword";
@@ -29,8 +31,45 @@ const NewPassSchema = Yup.object().shape({
 
 const NewPassword = ({navigation}) => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPasswordT, setShowPasswordT] = useState(false);
+  const [isLoading, setIsLoading] = useState(false)
+
+  const passwordApi = async(values) => {
+    try {
+      setIsLoading(true)
+      const response = await axios.post('https://unisell103.000webhostapp.com/upswd.php', {
+        password: values.password
+      })
+      console.log(response.data)
+      if (response.data.Message == 1){
+        navigation.navigate('Updated')
+      }
+      if (response.data.Message == 2){
+        setIsLoading(false)
+        alert('not success')
+      }
+    } catch (error) {
+      console.log(error)
+    }finally{
+      setIsLoading(false)
+    }
+  }
 
   return (
+    <>
+     {isLoading && (
+        <View style={styles.animations}>
+          <LottieView
+            source={require("../../../assets/animations/load2.json")}
+            autoPlay
+            loop
+            style={{
+              width: 200,
+              height: 200,
+            }}
+          />
+        </View>
+      )}
       <SafeView style={styles.container}>
         <View style={styles.top}>
           <Back onPress={() => navigation.goBack()}/>
@@ -49,7 +88,7 @@ const NewPassword = ({navigation}) => {
         </View>
         <Formik
           initialValues={{ password: "", confirmPassword: "" }}
-          onSubmit={(values) => console.log(values)}
+          onSubmit={passwordApi}
           validationSchema={NewPassSchema}
         >
           {({ handleChange, handleBlur, handleSubmit, values }) => (
@@ -62,7 +101,7 @@ const NewPassword = ({navigation}) => {
                 placeholder="New Password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                secureTextEntry
+                secureTextEntry={!showPassword}
                 onChangeText={handleChange("password")}
                 onBlur={handleBlur("password")}
                 value={values.password}
@@ -70,14 +109,14 @@ const NewPassword = ({navigation}) => {
               <ErrorMessage name={"password"} />
 
               <InputPassword
-                showPassword={showPassword}
-                setShowPassword={setShowPassword}
+                showPassword={showPasswordT}
+                setShowPassword={setShowPasswordT}
                 style={{ flex: 1 }}
                 icon="lock"
                 placeholder="Comfirm Password"
                 autoCapitalize="none"
                 autoCorrect={false}
-                secureTextEntry
+                secureTextEntry={!showPasswordT}
                 onChangeText={handleChange("confirmPassword")}
                 onBlur={handleBlur("confirmPassword")}
                 value={values.confirmPassword}
@@ -88,6 +127,7 @@ const NewPassword = ({navigation}) => {
           )}
         </Formik>
       </SafeView>
+    </>
   );
 };
 
@@ -138,5 +178,16 @@ const styles = StyleSheet.create({
   forms: {
     paddingLeft: 20,
     paddingRight: 20,
+  },
+  animations: {
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    zIndex: 1,
+    width: "100%",
+    height: "100%",
+    opacity: 0.9,
+    flex: 1,
   },
 });

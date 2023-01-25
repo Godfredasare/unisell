@@ -8,5 +8,6 @@ export default {
     forms: '#f5f3f0',
     back: '#f2f0ed',
     forget: '#fcf2dc',
-    backgroundColor: '#f2faf8'
+    backgroundColor: '#f2faf8',
+    telegram: '#4a4a4a'
 }

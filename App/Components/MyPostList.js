@@ -6,7 +6,7 @@ import {
   Dimensions,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
+import React from "react";
 import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Colors from "../Config/Colors";

@@ -4,11 +4,11 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 import Colors from "../Config/Colors";
 
-const PickerIcons = ({ background, icon, onPress, list, borderRadius=40 }) => {
+const PickerIcons = ({ background, icon, onPress, list}) => {
   return (
     <View style={styles.container}>
         <TouchableOpacity onPress={onPress} style={[styles.Icon, { backgroundColor: background }]}>
-          <MaterialCommunityIcons name={icon} size={40} color={'#fff'} />
+          <MaterialCommunityIcons name={icon} size={40} color={Colors.white} />
         </TouchableOpacity>
         <Text style={styles.text}>{list}</Text>
     </View>

@@ -3,13 +3,13 @@ import React from "react";
 
 import Button from "../../App/Components/Button";
 
-const image = require('../../assets/w2.jpg')
+const image = require('../../assets/s4.jpg')
 
 
 const WelcomeScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-    <ImageBackground source={image} resizeMode="cover" style={styles.image} blurRadius={5}>
+    <ImageBackground source={image} resizeMode="cover" style={styles.image}>
        <View style={styles.logoContainer}>
         <Image source={require(`../../assets/logom.png`)} style={styles.logo}  />
       </View>
@@ -20,9 +20,9 @@ const WelcomeScreen = ({ navigation }) => {
           onPress={() => navigation.navigate("Register")}
         />
         <Button
-          color={"secondary"}
           title={"Login"}
           style={{ borderWidth: 1, backgroundColor: "#fff" }}
+          colorText='secondary'
           onPress={() => navigation.navigate('Login')}
         />
       </View>

@@ -3,13 +3,13 @@ import React from "react";
 
 import Colors from "../Config/Colors";
 
-const Button = ({onPress, title, style, color='#fff'}) => {
+const Button = ({onPress, title, style, colorText='white'}) => {
   return (
     <TouchableOpacity
       onPress={onPress}
       style={[styles.container, style]}
     >
-      <Text style={[styles.text, {color}]}>{title}</Text>
+      <Text style={[styles.text, {color: Colors[colorText]}]}>{title}</Text>
     </TouchableOpacity>
   );
 };
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   text: {
-    color: "#fff",
+    // color: Colors.white,
     fontWeight: "700",
     fontSize: 17,
   },

@@ -3,36 +3,26 @@ import {
   Text,
   View,
   Image,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   Dimensions,
   Pressable,
 } from "react-native";
-import React, { useState } from "react";
-import { MaterialIcons, MaterialCommunityIcons } from "@expo/vector-icons";
+import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
 
 import Colors from "../Config/Colors";
 
 const Width = Dimensions.get("window").width;
 
-const PostItems = ({
-  title,
-  detail,
-  location,
-  price,
-  imageUrl,
-  onPress,
-  liked,
-  handleClicked,
-}) => {
-
-
-
+const PostItems = ({ title, detail, location, price, imageUrl, onPress }) => {
   return (
     <Pressable onPress={onPress} style={styles.wrap}>
       <View style={styles.container}>
-        <Image source={{uri: imageUrl}} style={styles.image} resizeMode={'contain'} />
-        
+        <Image
+          source={{ uri: imageUrl }}
+          style={styles.image}
+          resizeMode={"contain"}
+        />
+
         <View style={styles.textContainer}>
           <Text ellipsizeMode="tail" numberOfLines={1} style={styles.title}>
             {title}

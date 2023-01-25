@@ -30,7 +30,6 @@ const Email = ({ navigation }) => {;
           email: values.email,
         }
       );
-      console.log(response.data);
       if (response.data.Message == 1) {
         navigation.navigate('verify')
         resetForm();

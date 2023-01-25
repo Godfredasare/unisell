@@ -28,6 +28,10 @@ const MyPostScreen = ({ navigation }) => {
       const result = response.data.users;
       setListings(result);
       setIsLoading(false);
+      
+      if (response.data.Message == 2) {
+        setNoProducts(true);
+      }
     } catch (error) {
       setError(true);
       console.log(error);
@@ -42,20 +46,19 @@ const MyPostScreen = ({ navigation }) => {
   }, []);
 
   const handleDelete = async (post_id) => {
-    // const formData = new FormData();
-
-    // formData.append("postid", post_id);
     try {
       const response = await axios.post(
-        `https://unisell103.000webhostapp.com/delete.php?post=${post_id}`
-        // FormData,
-        // {
-        //   headers: {
-        //     "Content-Type": "multipart/form-data",
-        //   },
-        // }
+        "https://unisell103.000webhostapp.com/delete.php",
+        {
+          postid: post_id,
+        }
       );
       console.log(response.data);
+      if (response.data.Message == 1) {
+        alert("Item deleted successfully");
+
+        myPostApi();
+      }
     } catch (error) {
       console.log(error);
     }
@@ -64,7 +67,7 @@ const MyPostScreen = ({ navigation }) => {
   return (
     <SafeArea style={styles.container}>
       <View style={styles.top}>
-        <Back onPress={() => navigation.navigate("profile")} />
+        <Back onPress={() => navigation.goBack()} />
         <Text style={styles.text}>My Post</Text>
       </View>
       <View style={styles.post}>
@@ -74,6 +77,12 @@ const MyPostScreen = ({ navigation }) => {
             autoPlay
             loop
           />
+        )}
+
+        {noProducts && (
+          <Text style={styles.noProductsText}>
+            You haven't posted anything yet.
+          </Text>
         )}
 
         {isLoading ? (
@@ -127,7 +136,8 @@ export default MyPostScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.primary,
+    backgroundColor: "#f6f9f9",
+
   },
   top: {
     flexDirection: "row",
@@ -141,13 +151,19 @@ const styles = StyleSheet.create({
     fontWeight: "600",
   },
   post: {
-    height: Height * 0.65,
-    backgroundColor: Colors.white,
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    elevation: 10,
+    // height: Height * 0.65,
+    // backgroundColor: Colors.white,
+    // borderTopLeftRadius: 30,
+    // borderTopRightRadius: 30,
+    // elevation: 10,
     padding: 5,
     flex: 1,
+  },
+  noProductsText: {
+    alignSelf: "center",
+    fontSize: 18,
+    color: "#666",
+    paddingTop: 100,
   },
   load: {
     // flex: 1,

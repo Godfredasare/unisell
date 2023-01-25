@@ -17,9 +17,8 @@ import Button from "../Components/Button";
 import Category from "../Components/Category";
 import category from "../Data/category";
 import axios from "axios";
-import favoriteContext from "../hooks/favoriteContext";
-import AuthContext from "../hooks/Authcontex";
 import LottieView from "lottie-react-native";
+
 
 const HomeScreen = ({ navigation }) => {
   const [label, setLabel] = useState("All");
@@ -29,20 +28,32 @@ const HomeScreen = ({ navigation }) => {
   const [error, setError] = useState(false);
   const [noProducts, setNoProducts] = useState(false);
   const [isRefresh, setIsRefresh] = useState(false);
+  const [skip, setSkip] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [loadMore, setLoadMore] = useState(false);
+  const [limit, setLimit] = useState(30);
+
 
   const fetchData = async () => {
     try {
       const response = await axios.get(
-        `https://unisell103.000webhostapp.com/get.php?label=${label}`
+        `https://dummyjson.com/products?skip=${skip}&limit=${limit}`
       );
-      const result = response.data.users;
+      const result = response.data.products;
+      console.log(response.data);
       setList(result);
       setIsLoading(false);
-      if (response.data.Message == 2) {
-        setNoProducts(true);
+      if (response.data.hasMore) {
+        setHasMore(true);
       } else {
-        setNoProducts(false);
+        setHasMore(false);
       }
+
+      // if (response.data.Message == 2) {
+      //   setNoProducts(true);
+      // } else {
+      //   setNoProducts(false);
+      // }
     } catch (error) {
       if (error.message === "Network Error") {
         console.log("network error", error);
@@ -81,110 +92,135 @@ const HomeScreen = ({ navigation }) => {
   };
 
   return (
-    <favoriteContext.Provider value={{ isFavorite, setIsFavorite }}>
-      <SafeView style={styles.container}>
-        <>
-          <View style={styles.wrap}>
-            <Pressable
-              onPress={() => navigation.navigate("search")}
-              style={styles.wrapSearch}
-            >
-              <Text style={styles.searchText}> Search </Text>
-              <Ionicons name={"ios-search"} size={24} color={"#626363"} />
-            </Pressable>
+    <SafeView style={styles.container}>
+      <>
+        <View style={styles.wrap}>
+          <Pressable
+            onPress={() => navigation.navigate("search")}
+            style={styles.wrapSearch}
+          >
+            <Text style={styles.searchText}> Search </Text>
+            <Ionicons name={"ios-search"} size={24} color={"#626363"} />
+          </Pressable>
 
-            <Pressable style={styles.wrapSort} onPress={handleOrderClick}>
+          <Pressable style={styles.wrapSort} onPress={handleOrderClick}>
+            <MaterialCommunityIcons
+              name="order-alphabetical-ascending"
+              size={24}
+              color={Colors.white}
+            />
+          </Pressable>
+        </View>
+        <View>
+          <Category
+            label={label}
+            setStatusFilter={handleCategory}
+            items={category}
+          />
+        </View>
+
+        <View style={styles.flatlist}>
+          {isRefresh && (
+            <View style={styles.refreshContainer}>
+              <LottieView
+                source={require("../../assets/animations/load3.json")}
+                autoPlay
+                loop
+              />
+            </View>
+          )}
+
+          {noProducts && (
+            <Text style={styles.noProductsText}>
+              No products in this category.
+            </Text>
+          )}
+
+          {isLoading ? (
+            <View style={styles.load}>
+              <LottieView
+                source={require("../../assets/animations/load3.json")}
+                autoPlay
+                loop
+                style={{
+                  width: 200,
+                  height: 200,
+                }}
+              />
+            </View>
+          ) : error ? (
+            <View style={styles.errorContainer}>
+              <Text style={styles.errorText}>Couldn't load listings</Text>
+              <Button
+                title="Try again"
+                onPress={() => {
+                  fetchData();
+                }}
+              />
+            </View>
+          ) : (
+            <FlatList
+              onScroll={(e) =>
+                setShowButton(e.nativeEvent.contentOffset.y > 200)
+              }
+              onRefresh={() => {
+                setIsRefresh(true);
+                fetchData();
+              }}
+              refreshing={isRefresh}
+              onEndReachedThreshold={0.5}
+              onEndReached={() => {
+                if (hasMore) {
+                  setLoadMore(true);
+                  setSkip(skip + 1);
+                }
+              }}
+              showsVerticalScrollIndicator={false}
+              ref={flatListRef}
+              data={list}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => (
+                <PostItems
+                  imageUrl={item.images[0]}
+                  title={item.title}
+                  price={item.price}
+                  location={item.location}
+                  detail={item.description}
+                  onPress={() => {
+                    navigation.navigate("Detail", item);
+                  }}
+                />
+              )}
+              ListFooterComponent={() => {
+                if (loadMore) {
+                  return (
+                    <View style={styles.loadingMoreContainer}>
+                      <LottieView
+                        source={require("../../assets/animations/load3.json")}
+                        autoPlay
+                        loop
+                      />
+                    </View>
+                  );
+                }
+                return null;
+              }}
+            />
+          )}
+          {showButton && (
+            <Pressable onPress={handleScrollToTop} style={styles.wrapfilter}>
               <MaterialCommunityIcons
-                name="order-alphabetical-ascending"
+                name="chevron-up"
                 size={24}
                 color={Colors.white}
               />
             </Pressable>
-          </View>
-          <View>
-            <Category
-              label={label}
-              setStatusFilter={handleCategory}
-              items={category}
-            />
-          </View>
+          )}
 
-          <View style={styles.flatlist}>
-            {isRefresh && (
-              <View style={styles.refreshContainer}>
-                <LottieView
-                  source={require("../../assets/animations/load3.json")}
-                  autoPlay
-                  loop
-                />
-              </View>
-            )}
-
-            {noProducts && (
-              <Text style={styles.noProductsText}>
-                No products in this category.
-              </Text>
-            )}
-
-            {isLoading ? (
-              <View style={styles.load}>
-                <LottieView
-                  source={require("../../assets/animations/load3.json")}
-                  autoPlay
-                  loop
-                  style={{
-                    width: 200,
-                    height: 200,
-                  }}
-                />
-              </View>
-            ) : error ? (
-              <View style={styles.errorContainer}>
-                <Text style={styles.errorText}>Couldn't load listings</Text>
-                <Button title="Try again" onPress={() => fetchData()} />
-              </View>
-            ) : (
-              <FlatList
-                onScroll={(e) =>
-                  setShowButton(e.nativeEvent.contentOffset.y > 200)
-                }
-                onRefresh={() => {
-                  setIsRefresh(true);
-                  fetchData();
-                }}
-                refreshing={isRefresh}
-                onEndReachedThreshold={0.5}
-                showsVerticalScrollIndicator={false}
-                ref={flatListRef}
-                data={list}
-                keyExtractor={(item) => item.post_id}
-                renderItem={({ item }) => (
-                  <PostItems
-                    imageUrl={item.images[0]}
-                    title={item.title}
-                    price={item.price}
-                    location={item.location}
-                    detail={item.description}
-                    onPress={() => {
-                      navigation.navigate("Detail", item);
-                    }}
-                  />
-                )}
-              />
-            )}
-            {showButton && (
-              <Pressable onPress={handleScrollToTop} style={styles.wrapfilter}>
-                <MaterialCommunityIcons
-                  name="chevron-up"
-                  size={24}
-                  color={Colors.white}
-                />
-              </Pressable>
-            )}
-          </View>
-        </>
-      </SafeView>
-    </favoriteContext.Provider>
+        
+        </View>
+      </>
+    </SafeView>
   );
 };
 

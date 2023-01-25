@@ -25,11 +25,9 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: Colors.primary,
         alignItems: 'center',
-        // justifyContent: 'center',
         height: 50,
         width: '100%',
         zIndex: 1,
-        // position: 'absolute',
         top: Constants.statusBarHeight,
     },
     text: {

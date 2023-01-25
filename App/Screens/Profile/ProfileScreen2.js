@@ -2,6 +2,7 @@ import { Dimensions, StyleSheet, Text, View, Image, Alert } from "react-native";
 import React, { useContext, useEffect, useState } from "react";
 import SafeView from "../../Components/SafeAreaView";
 import { Ionicons, MaterialCommunityIcons } from "@expo/vector-icons";
+import axios from "axios";
 
 
 import AuthContext from "../../hooks/Authcontex";
@@ -9,7 +10,6 @@ import AuthStorage from "../../Auth/AuthStorage";
 import Colors from "../../Config/Colors";
 import Icons from "../../Components/Icons";
 import EditProfile from './EditProfile'
-import axios from "axios";
 
 const Width = Dimensions.get("window").width;
 const Height = Dimensions.get("window").height;
@@ -32,19 +32,11 @@ const fetchImage = async () => {
         }
     });
      const result = response.data.imageUrl;
-     console.log(result)
      setImageUrl(result)
   } catch (error) {
     console.log('Error fetching image: ', error);
   }
 }
-
-
-
-console.log(user)
-
-
-
 
 
 useEffect(() => {
@@ -56,11 +48,24 @@ useEffect(() => {
     setUserData(user);
   }, [user]);
 
+
+  const logoutFromServer = async (logout) => {
+    try {
+      await axios.post("https://unisell103.000webhostapp.com/logout.php", {
+        logout: logout
+      });
+    } catch (error) {
+      console.error("Error logging out from server:", error);
+    }
+  }
+  
+
   const handleLogOut = () => {
     Alert.alert("Logout", "Are you sure you want to logout", [
       {
         text: "Yes",
         onPress: () => {
+          logoutFromServer();
           setUser(null);
           AuthStorage.removeToken();
         },
@@ -125,7 +130,6 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#f7f9fa",
     flex: 1,
-    // padding: 20
   },
   wrapColor: {
     backgroundColor: Colors.primary,
